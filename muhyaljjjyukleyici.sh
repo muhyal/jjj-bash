@@ -185,11 +185,6 @@ echo "Jitsi yazılım doğrulama anahtarları ekleniyor..."
 if [ "$JITSI_REPO" = "stable" ]; then
 	echo "Jitsi stabil sürüm deposu zaten yüklenmiş."
 else
-<<<<<<< HEAD
-	echo 'deb https://download.jitsi.org stable/' > /etc/apt/sources.list.d/jitsi-stable.list
-=======
-	echo 'deb http://download.jitsi.org unstable/' > /etc/apt/sources.list.d/jitsi-unstable.list
->>>>>>> 2dd120e... Ek Jibri node ayarı
 	wget -qO - https://download.jitsi.org/jitsi-key.gpg.key | apt-key add -
 fi
 #LE SSL için
