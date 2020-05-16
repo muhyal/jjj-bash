@@ -21,7 +21,7 @@ set -x
 fi
 
 # SİSTEM YÜKLEMESİ
-JITSI_STBL_REPO=$(apt-cache policy | grep http | grep jitsi | grep stable | awk '{print $3}' | head -n 1 | cut -d "/" -f1)
+JITSI_REPO=$(apt-cache policy | grep http | grep jitsi | grep stable | awk '{print $3}' | head -n 1 | cut -d "/" -f1)
 CERTBOT_REPO=$(apt-cache policy | grep http | grep certbot | head -n 1 | awk '{print $2}' | cut -d "/" -f4)
 APACHE_2=$(dpkg-query -W -f='${Status}' apache2 2>/dev/null | grep -c "ok installed")
 NGINX=$(dpkg-query -W -f='${Status}' nginx 2>/dev/null | grep -c "ok installed")
@@ -182,10 +182,14 @@ read -n 1 -s -r -p "Devam etmek için bir tuşa basın..."
 fi
 # Jitsi-Meet Repo
 echo "Jitsi yazılım doğrulama anahtarları ekleniyor..."
-if [ "$JITSI_STBL_REPO" = "stable" ]; then
+if [ "$JITSI_REPO" = "stable" ]; then
 	echo "Jitsi stabil sürüm deposu zaten yüklenmiş."
 else
+<<<<<<< HEAD
 	echo 'deb https://download.jitsi.org stable/' > /etc/apt/sources.list.d/jitsi-stable.list
+=======
+	echo 'deb http://download.jitsi.org unstable/' > /etc/apt/sources.list.d/jitsi-unstable.list
+>>>>>>> 2dd120e... Ek Jibri node ayarı
 	wget -qO - https://download.jitsi.org/jitsi-key.gpg.key | apt-key add -
 fi
 #LE SSL için
@@ -668,6 +672,18 @@ cat << CONF_JSON > $CONF_JSON
     ]
 }
 CONF_JSON
+
+#jibri-node-ekle.sh
+sed -i "s|MAIN_SRV_DIST=.*|MAIN_SRV_DIST=\"$DIST\"|" jibri-node-ekle.sh
+sed -i "s|MAIN_SRV_REPO=.*|MAIN_SRV_REPO=\"$JITSI_REPO\"|" jibri-node-ekle.sh
+sed -i "s|MAIN_SRV_DOMAIN=.*|MAIN_SRV_DOMAIN=\"$DOMAIN\"|" jibri-node-ekle.sh
+sed -i "s|JB_NAME=.*|JB_NAME=\"$JB_NAME\"|" add-jibri-node.sh
+sed -i "s|JibriBrewery=.*|JibriBrewery=\"$JibriBrewery\"|" jibri-node-ekle.sh
+sed -i "s|JB_AUTH_PASS=.*|JB_AUTH_PASS=\"$JB_AUTH_PASS\"|" jibri-node-ekle.sh
+sed -i "s|JB_REC_PASS=.*|JB_REC_PASS=\"$JB_REC_PASS\"|" jibri-node-ekle.sh
+sed -i "$(var_dlim 0_LAST),$(var_dlim 1_LAST){s|LETS: .*|LETS: $(date -R)|}" jibri-node-ekle.sh
+echo "Son duzenleme: $(grep "LETS:" jibri-node-ekle.sh|head -n1|awk -F'LETS:' '{print$2}')"
+
 #Jitsi uygulama kontrolü için Tune web sunucusu
 if [ -f $WS_CONF ]; then
 	sed -i "/Eşleşme bulunamadı/i \\\n" $WS_CONF
