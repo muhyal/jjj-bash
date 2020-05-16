@@ -639,7 +639,7 @@ chown jibri:jibri $REC_DIR
 chmod +x $REC_DIR
 
 ## JSON ayarlanıyor
-cp $CONF_JSON $CONF_JSON.orig
+cp $CONF_JSON ${CONF_JSON}.orijinal
 cat << CONF_JSON > $CONF_JSON
 {
     "recording_directory":"$DIR_RECORD",
