@@ -160,6 +160,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=$GC_API_JSON
 echo "Jigasi'yi yüklediğinizde, SIP kimlik bilgileriniz sorulacak (mandatory)"
 apt-get -y install jigasi=1.0-235
 
+apt-mark hold jigasi
 
 cat  << JIGASI_CONF >> $JIGASI_CONFIG
 GOOGLE_APPLICATION_CREDENTIALS=$GC_API_JSON
